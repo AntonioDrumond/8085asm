@@ -3,7 +3,6 @@
 
 #include <math.h>
 #include <string.h>
-#include <iostream>
 
 char* cToBin(u_char c){
 	int n = (int)c;
