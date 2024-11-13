@@ -41,7 +41,7 @@ class Memory
 		initVoid();
 		if (r > 0)
 		{
-			u_char deft = '0';
+			u_char deft = 0x00;
 			ix = 0;
 			iy = 0;
 			rows = r;
@@ -82,8 +82,8 @@ class Memory
 		return (res);
 	}
 
-	// Liberar matriz da memoria
-	void free ()
+	// Destrutor
+	~Matrix ()
 	{	
 		if (this->isValid())
 		{
@@ -125,7 +125,7 @@ class Memory
 			{
 				for (int y = 0; y < this->rows; y++)
 				{
-					this->data[i][y] = '0';
+					this->data[i][y] = 0x00;
 				}
 			}
 		}
