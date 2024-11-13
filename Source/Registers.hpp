@@ -45,12 +45,25 @@ class Registers
 	Par* DE;
 	Par* HL;
 
+	// Construtor //
+
 	Registers ()
 	{
 		this->BC = new Par();
 		this->DE = new Par();
 		this->HL = new Par();
-	}	
+	}
+
+	// Destrutor
+
+	~Registers ()
+	{
+		delete (BC);
+		delete (DE);
+		delete (HL);
+	}
+
+	// Metodos set //
 
 	void setB (u_char c)
 	{
@@ -81,5 +94,38 @@ class Registers
 	{
 		this->HL->y = c;
 	}
+
+	// Metodos set //
+
+	u_char getB (void)
+	{
+		return (this->BC->x);
+	}
+
+	u_char getC (void)
+	{
+		return (this->BC->y);
+	}
+
+	u_char getD (void)
+	{
+		return (this->DE->x);
+	}
+
+	u_char getE (void)
+	{
+		return (this->DE->y);
+	}
+
+	u_char getH (void)
+	{
+		return (this->HL->x);
+	}
+
+	u_char getL (void)
+	{
+		return (this->HL->y);
+	}
+
 
 };
