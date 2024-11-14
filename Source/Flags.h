@@ -5,75 +5,37 @@ class Flags{
 
 	private:
 
-	bool Z;
-	bool CY;
-	bool S;
-	bool P;
-	bool AC;
+	u_char data;
+	/*
+	bytes:
+		0 - Z
+		1 - CY
+		2 - S
+		3 - P
+		4 - AC
+	*/
 
 	public:
 
 	Flags(){
-		this.Z = false;
-		this.CY = false;
-		this.S = false;
-		this.P = false;
-		this.AC = false;
+		this->data = 0x00;
 	}
 
 	~Flags(){
 	}
 
 	void setZ(){
-		this.Z = true;
+		this->data = this->data | 0b10000000;
 	}
 	void resetZ(){
-		this.Z = false;
+		this->data = this->data & 0b01111111;
 	}
 	bool getZ(){
-		return this.Z;
+		return this->data == (this->data | 0b10000000);
 	}
 
-	void setbool CY(){
-		this.CY = true;
-	}
-	void resetCY(){
-		this.CY = false;
-	}
-	bool getCY(){
-		return this.CY;
-	}
+	
 
-	void setbool S(){
-		this.S = true;
-	}
-	void resetS(){
-		this.S = false;
-	}
-	bool getS(){
-		return this.S;
-	}
-
-	void setbool P(){
-		this.P = true;
-	}
-	void resetP(){
-		this.P = false;
-	}
-	bool getP(){
-		return this.P;
-	}
-
-	void setbool AC(){
-		this.AC = true;
-	}
-	void resetAC(){
-		this.AC = false;
-	}
-	bool getAC(){
-		return this.AC;
-	}
-
-}
+};
 
 #endif

@@ -3,25 +3,17 @@
 
 #include <math.h>
 #include <string.h>
+#include <cstdint>
 
-char* cToBin(u_char c){
-	int n = (int)c;
-	char* result = new char[8];
-	for(int exp=7; exp>=0; exp--){
-		int p = pow(2, exp);
-		if(n >= p){
-			n -= p;
-			result[7-exp] = '1';
-		}
-		else result[7-exp] = '0';
-	}
+char* toBin(uint8_t x){
+	char* result = new char[9];
+	snprintf(result, 9, "%8b", x);
 	return result;
 }
 
-char* cToHexa(u_char c){
-	int n = (int)c;
-	char* result = new char[4];
-	snprintf(result, 3, "%2X", n);
+char* toHexa(uint8_t x){
+	char* result = new char[3];
+	snprintf(result, 9, "%2X", x);
 	return result;
 }
 
