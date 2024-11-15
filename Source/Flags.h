@@ -1,11 +1,13 @@
 #ifndef FLAGS_H
 #define FLAGS_H
 
+#include <cstdint>
+
 class Flags{
 
 	private:
 
-	u_char data;
+	uint8_t data;
 	/*
 	bytes:
 		0 - Z
@@ -25,13 +27,13 @@ class Flags{
 	}
 
 	void setZ(){
-		this->data = this->data | 0b10000000;
+		this->data = this->data | 0x80;
 	}
 	void resetZ(){
-		this->data = this->data & 0b01111111;
+		this->data = this->data & 0x7F;
 	}
 	bool getZ(){
-		return this->data == (this->data | 0b10000000);
+		return 0 != (this->data & 0x80);
 	}
 
 	
