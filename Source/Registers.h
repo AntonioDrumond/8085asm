@@ -45,7 +45,7 @@ class Registers{
 
 	/*____ Flag operations ____
 	 *
-	 *	Bits in the registers:
+	 *	Bits in the flags register:
 	 *	S Z - AC - P - CY
 	 *	0 1 2  3 4 5 6  7
 	*/
