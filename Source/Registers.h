@@ -1,3 +1,6 @@
+#ifndef REGISTERS_H
+#define REGISTERS_H
+
 struct SeparateAccess{
 	uint8_t r : 8;
 	uint8_t l : 8;
@@ -186,3 +189,5 @@ class Registers{
 	}
 
 };
+
+#endif
