@@ -11,9 +11,15 @@ char* toBin(uint8_t x){
 	return result;
 }
 
+char* toHexa(uint16_t x){
+	char* result = new char[5];
+	snprintf(result, 5, "%4X", x);
+	return result;
+}
+
 char* toHexa(uint8_t x){
 	char* result = new char[3];
-	snprintf(result, 9, "%2X", x);
+	snprintf(result, 3, "%2X", x);
 	return result;
 }
 
