@@ -13,76 +13,46 @@
 class Memory
 {
 	private: 
-	int usingX, usingY;
-	int totalX, totalY;
+	uint8_t* data;
 
-	uint8_t** data;
+	public:
 
 	// Construtores //
 	Memory()
 	{
-		totalX = totalY = 256;
-		data = new uint8_t* [256];
-		for(int i=0; i<256; i++)
-		{
-			data[i] = new uint8_t [256];
-		}
+		data = new uint8_t[0xFFFF + 1];
 	}
 
 	~Memory()
 	{
-		if(data){
-			for(int i=0; i<256; i++)
-			{
-				if(data[i]) delete data[i];
-			}
-			delete[] data;
-		}
+		if(data) delete[] data;
 	}
 
 	// Verificar se a matriz possui dados alocados
 	bool isValid ()
 	{
-		bool res = this->data != nullptr;
-		if (res)
-		{
-			for(int i=0; i<256 && res; i++)
-			{
-				if(!this->data[i]) res = false;
-			}
-		}
-		return (res);
+		return data != nullptr;
 	}
 
 	// Inserir valor na matriz
-	void insert (uint8_t in, int y, int x)
+	void insert (uint8_t in, uint16_t addr)
 	{
-		if (this->isValid())
-		{
-			this->data[y%256][x%256] = in;
-		}
+		if(this->data) this->data[(int)addr] = in;
 	}
 
-	uint8_t get (int y, int x)
+	uint8_t get (uint16_t addr)
 	{
-		uint8_t res = 0x00;
-		if (this->isValid())
-		{
-			res = this->data[abs(y%256)][abs(x%256)];
-		}
-		return (res);
+		uint8_t ret = 0x00;
+		if(this->data) ret = this->data[(int)addr];
+		return ret;
 	}
 
 	void flush ()
 	{
-		if (this->isValid())
-		{
-			for (int i = 0; i < totalY; i++)
-			{
-				for (int j = 0; j < totalX; j++)
-				{
-					this->data[i][j] = 0x00;
-				}
+		int reps = 0xFFFF + 1;
+		if(data){
+			for(int i=0; i<reps; i++){
+				this->data[i] = 0x00;
 			}
 		}
 	}
