@@ -40,7 +40,11 @@ class Registers{
 		delete AF;
 		delete BC;
 		delete DE;
-		delete HL;
+		delete HL
+	}
+
+	RegPair* getPointerAF(){
+		return this->AF;
 	}
 
 	/*____ Flag operations ____
