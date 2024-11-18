@@ -35,8 +35,26 @@ class ALU{
 			case 'l': added = r->getL(); break;
 			default:  added = 0x00;      break;
 		}
-		/* SET FLAGS HERE */
+		if(added&0b10000000 == r->getA()&0b10000000) r->setCY();
 		AF->s.l += added;
+	}
+
+	void subReg(char c){
+		char C = c<'a' ? c+'a'-'A' : c;
+		uint8_t subbed= 0x00;
+		switch (C)
+		{
+			case 'a': subbed= r->getA(); break;
+			case 'b': subbed= r->getB(); break;
+			case 'c': subbed= r->getC(); break;
+			case 'd': subbed= r->getD(); break;
+			case 'e': subbed= r->getE(); break;
+			case 'h': subbed= r->getH(); break;
+			case 'l': subbed= r->getL(); break;
+			default:  subbed= 0x00;      break;
+		}
+		if(subbed0b10000000 == r->getA()&0b10000000) r->setCY();
+		AF->s.l -= subbed
 	}
 
 	
