@@ -35,7 +35,7 @@ class Memory
 	}
 
 	// Inserir valor na matriz
-	void insert (uint8_t in, uint16_t addr)
+	void set (uint8_t in, uint16_t addr)
 	{
 		if(this->data) this->data[(int)addr] = in;
 	}
