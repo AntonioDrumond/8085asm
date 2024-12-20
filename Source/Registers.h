@@ -40,7 +40,7 @@ class Registers{
 		delete AF;
 		delete BC;
 		delete DE;
-		delete HL
+		delete HL;
 	}
 
 	RegPair* getPointerAF(){
@@ -190,6 +190,70 @@ class Registers{
 	}
 	void setPC(uint16_t x){
 		PC = x;
+	}
+
+	// ____INR and DCR methods____
+	void inrA(){
+		if(AF->s.l == 0xFF) setCY();
+		AF->s.l += 0x01;
+	}
+	void dcrA(){
+		if(AF->s.l == 0x00) setCY();
+		AF->s.l -= 0x01;
+	}
+
+	void inrB(){
+		if(BC->s.l == 0xFF) setCY();
+		BC->s.l += 0x01;
+	}
+	void dcrB(){
+		if(BC->s.l == 0x00) setCY();
+		BC->s.l -= 0x01;
+	}
+
+	void inrC(){
+		if(BC->s.r == 0xFF) setCY();
+		BC->s.r += 0x01;
+	}
+	void dcrC(){
+		if(BC->s.r == 0x00) setCY();
+		BC->s.r -= 0x01;
+	}
+
+	void inrD(){
+		if(DE->s.l == 0xFF) setCY();
+		DE->s.l += 0x01;
+	}
+	void dcrD(){
+		if(DE->s.l == 0x00) setCY();
+		DE->s.l -= 0x01;
+	}
+
+	void inrE(){
+		if(DE->s.r == 0xFF) setCY();
+		DE->s.r += 0x01;
+	}
+	void dcrE(){
+		if(DE->s.r == 0x00) setCY();
+		DE->s.r -= 0x01;
+	}
+
+	void inrH(){
+		if(HL->s.l == 0xFF) setCY();
+		HL->s.l += 0x01;
+	}
+	void dcrH(){
+		if(HL->s.l == 0x00) setCY();
+		HL->s.l -= 0x01;
+	}
+
+	void inrL(){
+		if(HL->s.r == 0xFF) setCY();
+		HL->s.r += 0x01;
+	}
+	void dcrL(){
+		if(HL->s.r == 0x00) setCY();
+		HL->s.r -= 0x01;
 	}
 
 };
