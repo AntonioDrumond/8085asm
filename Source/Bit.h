@@ -4,10 +4,17 @@
 #include <math.h>
 #include <string.h>
 #include <cstdint>
+#include <cstdio>
 
 char* toBin(uint8_t x){
 	char* result = new char[9];
 	snprintf(result, 9, "%8b", x);
+	return result;
+}
+
+char* toBin(uint16_t x){
+	char* result = new char[17];
+	snprintf(result, 17, "%16b", x);
 	return result;
 }
 
