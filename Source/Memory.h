@@ -1,7 +1,7 @@
 #ifndef MEMORY_H
 #define MEMORY_H
-
 #include "Bit.h"
+#include <cstdint>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -10,93 +10,181 @@
 
 #define null nullptr
 
+#define __MEMLEN__ (0xFFFF+1)
+
 class Memory
 {
-	private: 
-	uint8_t* data;
+	// ============ Define basics ============ //
+	private:
+
+	// Define memory pointer
+	uint8_t* memory = nullptr;
 
 	public:
-
-	// Construtores //
+	
+	// Constructor
 	Memory()
 	{
-		data = new uint8_t[0xFFFF + 1];
-	}
+		memory = new uint8_t[__MEMLEN__]; 	// 65535
 
-	~Memory()
-	{
-		if(data) delete[] data;
-	}
-
-	// Verificar se a matriz possui dados alocados
-	bool isValid ()
-	{
-		return data != nullptr;
-	}
-
-	// Inserir valor na matriz
-	void set (uint8_t in, uint16_t addr)
-	{
-		if(this->data) this->data[(int)addr] = in;
-	}
-
-	uint8_t get (uint16_t addr)
-	{
-		uint8_t ret = 0x00;
-		if(this->data) ret = this->data[(int)addr];
-		return ret;
-	}
-
-	void flush ()
-	{
-		int reps = 0xFFFF + 1;
-		if(data){
-			for(int i=0; i<reps; i++){
-				this->data[i] = 0x00;
+		if (this->isValid())
+		{
+			for (int i = 0; i < __MEMLEN__; i++)
+			{
+				memory[i] = 0x00;
 			}
 		}
 	}
 
-	void print ()
+	// Destructor
+	~Memory()
+	{
+		if (memory)
+		{
+			delete (memory);
+		}
+	}
+
+	// Check memory availability
+	bool isValid (void)
+	{
+		bool res = (memory);
+		if (!res)
+		{
+			std::cout << "ERROR: The memory is empty!\n";
+		}
+		return (res);
+	}
+
+	// ============ Define set methods ============ //
+
+	// Set 8 bits in the memory
+	void set8bits (uint16_t index, uint8_t value)
 	{
 		if (this->isValid())
 		{
-			std::cout << "      0 1 2 3 4 5 6 7 8 9 A B C D E F" << "\n";
-			std::cout << "     --------------------------------" << "\n";
-			for (int i = 0; i < this->rows; i++)
-			{
-				std::cout << std::setfill('0') << std::setw(4);
-				std::cout << i << " |";
-				for (int y = 0; y < this->cols; y++)
-				{
-					std::cout << data[i][y] << " " << std::flush;
-				}
-				std::cout << "\n";
-			}
+			// Set bits
+			memory[index] = value;
 		}
 	}
 
-	void print (const char* const filename)
+	// Set 16 bits in the memory
+	void set16bits (uint16_t index, uint16_t value)
 	{
-		if (filename && this->isValid())
+		if (this->isValid())
 		{
-			std::ofstream file;
-			file.open (filename);
-			file << "      0 1 2 3 4 5 6 7 8 9 A B C D E F" << "\n";
-			file << "     --------------------------------" << "\n";
-			for (int i = 0; i < this->rows; i++)
+			if (index < (__MEMLEN__-1))
 			{
-				file << std::setfill('0') << std::setw(4);
-				file << i << " |";
-				for (int y = 0; y < this->cols; y++)
-				{
-					file << data[i][y] << " " << std::flush;
-				}
-				file << "\n";
+				// Separate bits
+				uint8_t maskTop = ( (value & 0xFF00) >> 8 );
+				uint8_t maskBot = 	(value & 0x00FF);
+
+				// Set bits
+				memory[index] = maskTop;
+				memory[index+1] = maskBot;
+			}
+			else
+			{
+				std::cout << "ERROR: Invalid index at [set16bits]!\n";
 			}
 		}
 	}
 
-};
+	// ============ Define get methods ============ //
 
+	// Get a 8 bits value from the memory
+	uint8_t get8bits (uint16_t index)
+	{
+		uint8_t res = 0x00;
+		if (this->isValid())
+		{
+			res = memory[index];
+		}
+		return (res);
+	}
+
+	// Get a 16 bits value from the memory
+	uint16_t get16bits (uint16_t index)
+	{
+		uint16_t res = 0x0000;
+		if (this->isValid())
+		{
+			if (index < (__MEMLEN__-1))
+			{
+				uint8_t tmp = memory[index];
+				res = memory[index] << 8;
+				res = res + memory[index+1];
+			}
+			else
+			{
+				std::cout << "ERROR: Index error at [get16bits]!\n";
+			}
+		}
+		return (res);
+	}
+
+	// ============ Define print method ============ //	
+
+	// Print memory //
+	void print (void)
+	{
+		for (int i = 0; i < __MEMLEN__; i++)
+		{
+			printf ("%u ", memory[i]);
+
+			if (i % 65 == 0)
+			{
+				printf("\n");
+			}
+		}
+	}
+
+	// ============ Define file methods ============ //
+
+	// Write memory in a file //
+	void writeLog (void)
+	{
+		if (this->isValid())
+		{
+			std::fstream fs;
+
+			fs.open("memoryLog.bin", std::ios::out | std::ios::binary);
+
+			if (!fs.good()) // Check file
+			{
+				std::cout << "ERROR: The file could not be opened!\n";	
+			}
+			else
+			{
+				for (int i = 0; i < __MEMLEN__; i = i+1)
+				{
+					fs << memory[i] << '\n';
+				}
+
+				fs.close();
+			}
+		}
+	}
+
+	// Read memory in a file //
+	void readLog (void)
+	{
+		std::fstream fs;
+
+		fs.open("memoryLog.bin", std::ios::in | std::ios::binary);
+
+		if (!fs.good())
+		{
+			std::cout << "ERROR: The file could not be opened!\n";	
+		}
+		else
+		{
+			for (int i = 0; i < __MEMLEN__; i++)
+			{
+				fs >> memory[i];
+			}
+			fs.close();
+		}
+	}
+};
 #endif
