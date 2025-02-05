@@ -2,6 +2,8 @@
 #define ALU_H
 
 #include "Registers.h"
+#include "Memory.h"
+#include <cstdint>
 
 class ALU{
 
@@ -12,19 +14,19 @@ class ALU{
 
 	public:
 	
-	ALU(Registers* r, Memory* mem){
+	ALU (Registers* r, Memory* mem){
 		this->r = r;
 		this->AF = r->getPointerAF();
 		this->mem = mem;
 	}
 
-	~ALU(){
+	~ALU (void){
 		this->r = nullptr;
 		this->AF = nullptr;
 		this->mem = nullptr;
 	}
 
-	void add(char c){
+	void add (char c){
 		char C = c<'a' ? c+'a'-'A' : c;
 		uint8_t added = 0x00;
 		switch (C)
@@ -36,7 +38,7 @@ class ALU{
 			case 'e': added = r->getE(); break;
 			case 'h': added = r->getH(); break;
 			case 'l': added = r->getL(); break;
-			case 'm': added = mem->get(r->getHL()); break;
+			case 'm': added = mem->get8bits(r->getHL()); break;
 			default:  added = 0x00;      break;
 		}
 		if(added&0b10000000 == r->getA()&0b10000000) r->setCY();
@@ -56,12 +58,12 @@ class ALU{
 			case 'e': subbed= r->getE(); break;
 			case 'h': subbed= r->getH(); break;
 			case 'l': subbed= r->getL(); break;
-			case 'm': subbed= mem->get(r->getHL()); break;
+			case 'm': subbed= mem->get8bits(r->getHL()); break;
 			default:  subbed= 0x00;      break;
 		}
 		if(subbed > r->getA()&0b10000000) r->setCY();
 		else r->resetCY();
-		AF->s.l -= subbed
+		AF->s.l -= subbed;
 	}
 
 	void adcReg(char c){
@@ -76,7 +78,7 @@ class ALU{
 			case 'e': added = r->getE(); break;
 			case 'h': added = r->getH(); break;
 			case 'l': added = r->getL(); break;
-			case 'm': added = mem->get(r->getHL()); break;
+			case 'm': added = mem->get8bits(r->getHL()); break;
 			default:  added = 0x00;      break;
 		}
 		bool cy = false;
@@ -95,17 +97,14 @@ class ALU{
 	}
 
 	void aci(uint8_t x){
-		if(x&0b10000000 == r->getA()&0b10000000) cy = true;
+		bool cy = false;
+		if (x&0b10000000 == r->getA()&0b10000000) cy = true;
 		AF->s.l += x;
 		if(AF->s.l == 0xFF && r->getCY()) cy = true;
 		if(r->getCY()) AF->s.l += 0x01;
 		if(cy) r->setCY();
 		else r->resetCY();
 	}
-
-
-
-
 };
 
 #endif
