@@ -43,7 +43,7 @@ class ALU{
 		}
 		if(added&0b10000000 == r->getA()&0b10000000) r->setCY();
 		else r->resetCY();
-		AF->s.l += added;
+		AF->l += added;
 	}
 
 	void sub(char c){
@@ -63,7 +63,7 @@ class ALU{
 		}
 		if(subbed > r->getA()&0b10000000) r->setCY();
 		else r->resetCY();
-		AF->s.l -= subbed;
+		AF->l -= subbed;
 	}
 
 	void adcReg(char c){
@@ -83,9 +83,9 @@ class ALU{
 		}
 		bool cy = false;
 		if(added&0b10000000 == r->getA()&0b10000000) cy = true;
-		AF->s.l += added;
-		if(AF->s.l == 0xFF && r->getCY()) cy = true;
-		if(r->getCY()) AF->s.l += 0x01;
+		AF->l += added;
+		if(AF->l == 0xFF && r->getCY()) cy = true;
+		if(r->getCY()) AF->l += 0x01;
 		if(cy) r->setCY();
 		else r->resetCY();
 	}
@@ -93,15 +93,15 @@ class ALU{
 	void adi(uint8_t x){
 		if(x&0b10000000 == r->getA()&0b10000000) r->setCY();
 		else r->resetCY();
-		AF->s.l += x;
+		AF->l += x;
 	}
 
 	void aci(uint8_t x){
 		bool cy = false;
 		if (x&0b10000000 == r->getA()&0b10000000) cy = true;
-		AF->s.l += x;
-		if(AF->s.l == 0xFF && r->getCY()) cy = true;
-		if(r->getCY()) AF->s.l += 0x01;
+		AF->l += x;
+		if(AF->l == 0xFF && r->getCY()) cy = true;
+		if(r->getCY()) AF->l += 0x01;
 		if(cy) r->setCY();
 		else r->resetCY();
 	}

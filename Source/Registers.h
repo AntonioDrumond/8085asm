@@ -3,17 +3,15 @@
 
 #include <cstdint>
 
-struct SeparateAccess{
-	uint8_t r : 8;
-	uint8_t l : 8;
-};	// Used to access the left or right halves of the register pair
-
 union RegPair{
-	SeparateAccess s;
-	uint16_t both : 16;
+    struct {
+        uint8_t r; // only right register
+        uint8_t l; // only left register
+    };
+	uint16_t b; // both registers in pair
 };
 
-class Registers{
+clasregisters{
 
 	private:
 	RegPair* AF;
@@ -27,13 +25,13 @@ class Registers{
 
 	Registers(){
 		AF = new RegPair;
-		AF->both = 0x0000;
+		AF->b = 0x0000;
 		BC = new RegPair;
-		BC->both = 0x0000;
+		BC->b = 0x0000;
 		DE = new RegPair;
-		DE->both = 0x0000;
+		DE->b = 0x0000;
 		HL = new RegPair;
-		HL->both = 0x0000;
+		HL->b = 0x0000;
 		SP = 0x0000;
 		PC = 0x0000;
 	}
@@ -51,96 +49,96 @@ class Registers{
 
 	/*____ Flag operations ____
 	 *
-	 *	Bits in the flags register:
+	 *	Bits in the flag register:
 	 *	S Z - AC - P - CY
 	 *	0 1 2  3 4 5 6  7
 	*/
 
 	bool getS(){
-		return (AF->s.r & 0x80) != 0;
+		return (AF->r & 0x80) != 0;
 	}
 	void setS(){
-		AF->s.r = AF->s.r | 0x80;
+		AF->r = AF->s.r | 0x80;
 	}
 	void resetS(){
-		AF->s.r = AF->s.r & 0x7F;
+		AF->r = AF->s.r & 0x7F;
 	}
 
 	bool getZ(){
-		return (AF->s.r & 0x40) != 0;
+		return (AF->r & 0x40) != 0;
 	}
 	void setZ(){
-		AF->s.r = AF->s.r | 0x40;
+		AF->r = AF->s.r | 0x40;
 	}
 	void resetZ(){
-		AF->s.r = AF->s.r & 0xBF;
+		AF->r = AF->s.r & 0xBF;
 	}
 
 	bool getAC(){
-		return (AF->s.r & 0x10) != 0;
+		return (AF->r & 0x10) != 0;
 	}
 	void setAC(){
-		AF->s.r = AF->s.r | 0x10;
+		AF->r = AF->s.r | 0x10;
 	}
 	void resetAC(){
-		AF->s.r = AF->s.r & 0xEF;
+		AF->r = AF->s.r & 0xEF;
 	}
 
 	bool getP(){
-		return (AF->s.r & 0x04) != 0;
+		return (AF->r & 0x04) != 0;
 	}
 	void setP(){
-		AF->s.r = AF->s.r | 0x04;
+		AF->r = AF->s.r | 0x04;
 	}
 	void resetP(){
-		AF->s.r = AF->s.r & 0xFB;
+		AF->r = AF->s.r & 0xFB;
 	}
 
 	bool getCY(){
-		return (AF->s.r & 0x01) != 0;
+		return (AF->r & 0x01) != 0;
 	}
 	void setCY(){
-		AF->s.r = AF->s.r | 0x01;
+		AF->r = AF->s.r | 0x01;
 	}
 	void resetCY(){
-		AF->s.r = AF->s.r & 0xFE;
+		AF->r = AF->s.r & 0xFE;
 	}
 
 
 	//____ Get Methods ____
 
 	uint8_t getA(){
-		return AF->s.l;
+		return AF->l;
 	}
 
 	uint8_t getB(){
-		return BC->s.l;
+		return BC->l;
 	}
 	uint8_t getC(){
-		return BC->s.r;
+		return BC->r;
 	}
 	uint16_t getBC(){
-		return BC->both;
+		return BC->b;
 	}
 
 	uint8_t getD(){
-		return DE->s.l;
+		return DE->l;
 	}
 	uint8_t getE(){
-		return DE->s.r;
+		return DE->r;
 	}
 	uint16_t getDE(){
-		return DE->both;
+		return DE->b;
 	}
 
 	uint8_t getH(){
-		return HL->s.l;
+		return HL->l;
 	}
 	uint8_t getL(){
-		return HL->s.r;
+		return HL->r;
 	}
 	uint16_t getHL(){
-		return HL->both;
+		return HL->b;
 	}
 
 	uint16_t getSP(){
@@ -154,37 +152,37 @@ class Registers{
 	//____ Set Methods ____
 
 	void setA(uint8_t x){
-		AF->s.l = x;
+		AF->l = x;
 	}
 
 	void setB(uint8_t x){
-		BC->s.l = x;
+		BC->l = x;
 	}
 	void setC(uint8_t x){
-		BC->s.r = x;
+		BC->r = x;
 	}
 	void setBC(uint16_t x){
-		BC->both = x;
+		BC->b = x;
 	}
 
 	void setD(uint8_t x){
-		DE->s.l = x;
+		DE->l = x;
 	}
 	void setE(uint8_t x){
-		DE->s.r = x;
+		DE->r = x;
 	}
 	void setDE(uint16_t x){
-		DE->both = x;
+		DE->b = x;
 	}
 
 	void setH(uint8_t x){
-		HL->s.l = x;
+		HL->l = x;
 	}
 	void setL(uint8_t x){
-		HL->s.r = x;
+		HL->r = x;
 	}
 	void setHL(uint16_t x){
-		HL->both = x;
+		HL->b = x;
 	}
 
 	void setSP(uint16_t x){
@@ -196,66 +194,66 @@ class Registers{
 
 	// ____INR and DCR methods____
 	void inrA(){
-		if(AF->s.l == 0xFF) setCY();
-		AF->s.l += 0x01;
+		if(AF->l == 0xFF) setCY();
+		AF->l += 0x01;
 	}
 	void dcrA(){
-		if(AF->s.l == 0x00) setCY();
-		AF->s.l -= 0x01;
+		if(AF->l == 0x00) setCY();
+		AF->l -= 0x01;
 	}
 
 	void inrB(){
-		if(BC->s.l == 0xFF) setCY();
-		BC->s.l += 0x01;
+		if(BC->l == 0xFF) setCY();
+		BC->l += 0x01;
 	}
 	void dcrB(){
-		if(BC->s.l == 0x00) setCY();
-		BC->s.l -= 0x01;
+		if(BC->l == 0x00) setCY();
+		BC->l -= 0x01;
 	}
 
 	void inrC(){
-		if(BC->s.r == 0xFF) setCY();
-		BC->s.r += 0x01;
+		if(BC->r == 0xFF) setCY();
+		BC->r += 0x01;
 	}
 	void dcrC(){
-		if(BC->s.r == 0x00) setCY();
-		BC->s.r -= 0x01;
+		if(BC->r == 0x00) setCY();
+		BC->r -= 0x01;
 	}
 
 	void inrD(){
-		if(DE->s.l == 0xFF) setCY();
-		DE->s.l += 0x01;
+		if(DE->l == 0xFF) setCY();
+		DE->l += 0x01;
 	}
 	void dcrD(){
-		if(DE->s.l == 0x00) setCY();
-		DE->s.l -= 0x01;
+		if(DE->l == 0x00) setCY();
+		DE->l -= 0x01;
 	}
 
 	void inrE(){
-		if(DE->s.r == 0xFF) setCY();
-		DE->s.r += 0x01;
+		if(DE->r == 0xFF) setCY();
+		DE->r += 0x01;
 	}
 	void dcrE(){
-		if(DE->s.r == 0x00) setCY();
-		DE->s.r -= 0x01;
+		if(DE->r == 0x00) setCY();
+		DE->r -= 0x01;
 	}
 
 	void inrH(){
-		if(HL->s.l == 0xFF) setCY();
-		HL->s.l += 0x01;
+		if(HL->l == 0xFF) setCY();
+		HL->l += 0x01;
 	}
 	void dcrH(){
-		if(HL->s.l == 0x00) setCY();
-		HL->s.l -= 0x01;
+		if(HL->l == 0x00) setCY();
+		HL->l -= 0x01;
 	}
 
 	void inrL(){
-		if(HL->s.r == 0xFF) setCY();
-		HL->s.r += 0x01;
+		if(HL->r == 0xFF) setCY();
+		HL->r += 0x01;
 	}
 	void dcrL(){
-		if(HL->s.r == 0x00) setCY();
-		HL->s.r -= 0x01;
+		if(HL->r == 0x00) setCY();
+		HL->r -= 0x01;
 	}
 
 };
