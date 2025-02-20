@@ -9,4 +9,12 @@ class Assembler
 
 	public:
 
+    Memory* assemble(char* filename){
+        if(!filename){
+            std::cerr << "Erro: Nome de arquivo inválido\n";
+            return nullptr;
+        }
+
+    }
+
 }
