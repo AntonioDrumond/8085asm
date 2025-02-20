@@ -3,18 +3,20 @@
 
 #include <stdlib.h>
 
-void cls(){
+int cls(){
+    int ret = 1;
 #if defined(_WIN32) || defined(_WIN64) || defined(__WINDOWS__)
-    system("cls");
+    ret = system("cls");
 #elif defined(__linux__)
-    system("clear");
+    ret = system("clear");
 #elif defined(__APPLE__) && defined(__MACH__)
-    system("clear");
+    ret = system("clear");
 #elif defined(unix) || defined(__unix__) || defined(__unix)
-    system("clear");
+    ret = system("clear");
 #else
     #error Unknown_OS
 #endif
+    return ret;
 }
 
 #endif
