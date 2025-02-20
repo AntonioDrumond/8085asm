@@ -11,7 +11,7 @@ union RegPair{
 	uint16_t b; // both registers in pair
 };
 
-clasregisters{
+class registers{
 
 	private:
 	RegPair* AF;
