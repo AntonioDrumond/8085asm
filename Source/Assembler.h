@@ -98,7 +98,7 @@ class Labels{
         return res;
     }
 
-}
+};
 
     
 class Assembler
@@ -118,17 +118,24 @@ class Assembler
 
 	public:
 
-    Memory* assemble(char* filename)
-	{
-		Memory* res = NULL;
-        if(!filename)
-		{
-            std::cerr << "Erro: Nome de arquivo inválido\n";
+    Memory* assemble(const char* const filename) {
+		Memory* res = nullptr;
+        std::ifstream* fil = new std::ifstream(filename);
+        if(!fil->is_open()){
+            std::cerr << "ERRO: Arquivo nao encontrado\n";
         }
-		else
-		{
-			
-		}
+        else{
+            char* line = new char[1];
+            int i = 1;
+            do{
+                delete[] line;
+                line = new char[201];
+                fil->getline(line,200);
+                if(0!=strcmp(line, "")) std::cout << i++ << "\n";
+            } while(0!=strcmp(line, ""));
+            if(line) delete[] line;
+        }
+        if(fil) delete fil;
 		return (res);
     }
 

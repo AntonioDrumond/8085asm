@@ -4,26 +4,20 @@
 #include <cstring>
 #include <iostream>
 
-class AssemblerHash
-{
+class AssemblerHash {
 	private:
 	public:
 	uint8_t* table;
 	int CTindex;
 	uint8_t* colisionTable;
 
-	AssemblerHash ()
-	{
-		table = new uint8_t[79];
-		colisionTable = new uint8_t[21];
+	AssemblerHash() {
+		table = new uint8_t[80];
+		colisionTable = new uint8_t[22];
 		CTindex = 0;
 		if (!table || !colisionTable)
 		{
 			std::cerr << "ERROR: Not enough memory!\n";
-		}
-		else
-		{
-
 		}
 	}
 
