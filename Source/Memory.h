@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <string.h>
+#include <cstring>
 #include <math.h>
 
 #define null nullptr

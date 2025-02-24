@@ -1,11 +1,6 @@
 
-# Assembler
-
 ## Opcode Sheet
-
 ### Registers
-
-
 | MOV |  B  |  C  |  D  |  E  |  H  |  L  |  M  |  A  |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 |  B  | 40  | 41  | 42  | 43  | 44  | 45  | 46  | 47  |
@@ -30,8 +25,6 @@
 |    INR    | 04  | 0C  | 14  | 1C  | 24  | 2C  | 3A  | 3C  |
 |    DCR    | 05  | 0D  | 15  | 1D  | 25  | 2D  | 35  | 3D  |
 |    MVI    | 06  | 0E  | 16  | 1E  | 26  | 2E  | 36  | 3E  |
-
-
 # Duvidas
 
 + O que é ABEND e pra que serve o PSW?
